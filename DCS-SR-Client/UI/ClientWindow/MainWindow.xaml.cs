@@ -116,7 +116,7 @@ public partial class MainWindow : MetroWindow
         //TODO move this
         UpdatePresetsFolderLabel();
 
-        InitFlowDocument();
+        //InitFlowDocument();
 
         CheckWindowVisibility();
 
@@ -306,24 +306,24 @@ public partial class MainWindow : MetroWindow
         UpdatePresetsFolderLabel();
     }
 
-    private void InitFlowDocument()
-    {
-        //make hyperlinks work
-        var hyperlinks = WPFElementHelper.GetVisuals(AboutFlowDocument).OfType<Hyperlink>();
-        foreach (var link in hyperlinks)
-            link.RequestNavigate += (sender, args) =>
-            {
-                try
-                {
-                    Process.Start(new ProcessStartInfo(args.Uri.AbsoluteUri)
-                        { UseShellExecute = true });
-                }
-                catch (Exception)
-                {
-                    // ignored
-                }
+    //private void InitFlowDocument()
+    //{
+    //    //make hyperlinks work
+    //    var hyperlinks = WPFElementHelper.GetVisuals(AboutFlowDocument).OfType<Hyperlink>();
+    //    foreach (var link in hyperlinks)
+    //        link.RequestNavigate += (sender, args) =>
+    //        {
+    //            try
+    //            {
+    //                Process.Start(new ProcessStartInfo(args.Uri.AbsoluteUri)
+    //                    { UseShellExecute = true });
+    //            }
+    //            catch (Exception)
+    //            {
+    //                // ignored
+    //            }
 
-                args.Handled = true;
-            };
-    }
+    //            args.Handled = true;
+    //        };
+    //}
 }

@@ -18,6 +18,7 @@ using Ciribob.DCS.SimpleRadio.Standalone.Client.Singletons;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.UI.ClientWindow.ClientList;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.UI.ClientWindow.Favourites;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.UI.ClientWindow.RadioOverlayWindow;
+using Ciribob.DCS.SimpleRadio.Standalone.Client.UI.ClientWindow.MBOverlayWindow;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Utils;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Audio.Utility;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Helpers;
@@ -59,6 +60,8 @@ public class MainWindowViewModel : PropertyChangedBaseClass, IHandle<TCPClientSt
 
     private RadioOverlayWindow.RadioOverlayWindow _singleRadioOverlay;
 
+    private MBOverlayWindow.MBOverlay _mbRadioOverlay;
+
     public MainWindowViewModel()
     {
         _audioManager = new AudioManager(AudioOutput.WindowsN);
@@ -86,6 +89,8 @@ public class MainWindowViewModel : PropertyChangedBaseClass, IHandle<TCPClientSt
             Application.Current.MainWindow.Show();
             Application.Current.MainWindow.WindowState = WindowState.Normal;
         });
+
+        MBOverlayCommand = new DelegateCommand(MBOverlay);
 
         SingleStackOverlayCommand = new DelegateCommand(SingleRadioStackOverlay);
 
@@ -170,6 +175,8 @@ public class MainWindowViewModel : PropertyChangedBaseClass, IHandle<TCPClientSt
     public ICommand PreviewCommand { get; set; }
 
     public ICommand SingleStackOverlayCommand { get; set; }
+
+    public ICommand MBOverlayCommand { get; set; }
 
     public bool PreviewEnabled => AudioInput.MicrophoneAvailable && !IsConnected;
 
@@ -705,7 +712,34 @@ public class MainWindowViewModel : PropertyChangedBaseClass, IHandle<TCPClientSt
             }
         });
     }
+    private void MBOverlay()
+    {
+        ToggleMBRadioStack();
+    }
 
+    private void ToggleMBRadioStack()
+    {
+        if (_mbRadioOverlay == null || !_mbRadioOverlay.IsVisible ||
+            _mbRadioOverlay.WindowState == WindowState.Minimized)
+        {
+            _awacsRadioOverlay?.Close();
+            _awacsRadioOverlay = null;
+
+            _singleRadioOverlay?.Close();
+            _singleRadioOverlay = null;
+
+            _mbRadioOverlay = new MBOverlay();
+
+            _mbRadioOverlay.ShowInTaskbar =
+                !_globalSettings.GetClientSettingBool(GlobalSettingsKeys.RadioOverlayTaskbarHide);
+            _mbRadioOverlay.Show();
+        }
+        else
+        {
+            _mbRadioOverlay?.Close();
+            _mbRadioOverlay = null;
+        }
+    }
     private void SingleRadioStackOverlay()
     {
         ToggleSingleRadioStack();
@@ -719,6 +753,9 @@ public class MainWindowViewModel : PropertyChangedBaseClass, IHandle<TCPClientSt
             //hide awacs panel
             _awacsRadioOverlay?.Close();
             _awacsRadioOverlay = null;
+
+            _mbRadioOverlay?.Close();
+            _mbRadioOverlay = null;
 
             _singleRadioOverlay?.Close();
 
@@ -749,6 +786,9 @@ public class MainWindowViewModel : PropertyChangedBaseClass, IHandle<TCPClientSt
             //close normal overlay
             _singleRadioOverlay?.Close();
             _singleRadioOverlay = null;
+
+            _mbRadioOverlay?.Close();
+            _mbRadioOverlay = null;
 
             _awacsRadioOverlay?.Close();
 

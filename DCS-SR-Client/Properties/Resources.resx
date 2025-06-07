@@ -996,6 +996,9 @@ Requires Tx or Rx Effects On</value>
     <data name="ShowOverlay" xml:space="preserve">
     <value>Toggle Radio Overlay</value>
   </data>
+	<data name="ShowMBOverlay" xml:space="preserve">
+    <value>Toggle MB Overlay</value>
+  </data>
     <data name="ShowTransmitterName" xml:space="preserve">
     <value>Show Transmitter Name (Requires Server ON too)</value>
   </data>

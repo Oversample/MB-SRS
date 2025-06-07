@@ -184,6 +184,12 @@
                                     HorizontalAlignment="Center"
                                     Orientation="Horizontal">
                             <Button 
+                                Width="135"
+                                Margin="0,15,20,0"
+                                HorizontalAlignment="Center"
+                                Command="{Binding MBOverlayCommand}"
+                                Content="{x:Static p:Resources.ShowMBOverlay}" />
+                            <Button 
                                     Width="135"
                                     Margin="0,15,20,0"
                                     HorizontalAlignment="Center"
@@ -348,7 +354,7 @@
                                    Height="26"
                                    HorizontalAlignment="Center"
                                    Margin="5,0,5,0" />
-                       
+
                             <Label HorizontalAlignment="Center" HorizontalContentAlignment="Center"
                                    Content="{x:Static p:Resources.GameConnectionStatusLabel}" />
                             <Image x:Name="GameConnectionStatus"
@@ -366,12 +372,6 @@
 
                         </StackPanel>
 
-                        <!-- TODO fix this one -->
-                        <Button Content="{x:Static p:Resources.Donate_OnClick}"
-                                Command="{Binding DonateCommand}"
-                                Width="220"
-                                Margin="0,5,0,0" controls:ControlsHelper.ContentCharacterCasing="Normal"
-                                Style="{StaticResource MahApps.Styles.Button.Square.Accent}" />
                     </StackPanel>
                 </GroupBox>
             </ScrollViewer>
